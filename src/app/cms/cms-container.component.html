@@ -1,0 +1,23 @@
+<div>
+    <section class="content-header">
+      
+      </section>
+      <section class="content px-2">
+        <div class="container-fluid">
+          <div class="card">
+            <div class="card-body">
+                <form class="form-horizontal">
+              <div *ngIf = "editMode === true || newMode === true">
+                <cms-edit-presentation [pageTitle]="pageTitle" [pageContent]="pageContent"></cms-edit-presentation>
+              </div>
+          <div *ngIf = "editMode === false && newMode === false">
+            <cms-view-presentation [pageTitle]="pageTitle" [pageContent]="pageContent"></cms-view-presentation>
+          </div>
+                </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    
+   
+</div>
