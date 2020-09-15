@@ -3670,3 +3670,345 @@ function blobToText(blob: any): Observable<string> {
         }
     });
 }
+//Post Service Proxy
+export interface IInsertOrUpdateCmsContentDto {
+    pageContent: string | undefined;
+    pageTitle:string| undefined;
+    id:number;
+}
+export interface ICmsContentDto {
+    pageContent: string | undefined;
+    pageTitle:string| undefined;
+    id:number;
+}
+
+export class CmsContentDto implements ICmsContentDto {
+    pageContent: string | undefined;
+    pageTitle:string| undefined
+    id:number
+
+    constructor(data?: ICmsContentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.pageContent = data["pageContent"];
+            this.pageTitle = data["pageTitle"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any):CmsContentDto {
+       
+        data = typeof data === 'object' ? data : {};
+        let result = new CmsContentDto();
+        result.init(data);
+        console.log(result)
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["PageContent"] = this.pageContent;
+        data["PageTitle"] = this.pageTitle;
+        data["Id"] = this.id;
+        return data; 
+    }
+
+    clone():CmsContentDto {
+        const json = this.toJSON();
+        let result = new CmsContentDto();
+        result.init(json);
+        return result;
+    }
+}
+export class InsertOrUpdateCmsContentDto implements IInsertOrUpdateCmsContentDto {
+    pageContent: string | undefined;
+    pageTitle:string| undefined
+    id:number
+
+    constructor(data?: IInsertOrUpdateCmsContentDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.pageContent = data["PageContent"];
+            this.pageTitle = data["PageTitle"];
+            this.id = data["Id"];
+        }
+    }
+
+    static fromJS(data: any): InsertOrUpdateCmsContentDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new InsertOrUpdateCmsContentDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["pageContent"] = this.pageContent;
+        data["pageTitle"] = this.pageTitle;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): InsertOrUpdateCmsContentDto {
+        const json = this.toJSON();
+        let result = new InsertOrUpdateCmsContentDto();
+        result.init(json);
+        return result;
+    }
+}
+//
+export interface ICmsContentListDto {
+    items: CmsContentDto[] | undefined;
+}
+
+export class CmsContentListDto implements ICmsContentListDto {
+    items: CmsContentDto[] | undefined;
+
+    constructor(data?: IRoleDtoListResultDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            if (Array.isArray(data["items"])) {
+                this.items = [] as any;
+                for (let item of data["items"])
+                    this.items.push(CmsContentDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): CmsContentListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new CmsContentListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): CmsContentListDto {
+        const json = this.toJSON();
+        let result = new CmsContentListDto();
+        result.init(json);
+        return result;
+    }
+}
+/**
+ * Post Service 
+ * @author Basim E
+ */
+
+@Injectable()
+export class CmsServiceProxy {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl ? baseUrl : "";
+    }
+
+    /**
+     * @param body (optional) 
+     * @return Success
+     */
+     
+    insertOrUpdate(body: InsertOrUpdateCmsContentDto | undefined): Observable<CmsContentDto> {
+        let url_ = this.baseUrl + "/api/services/app/CmsContent/InsertOrUpdateCMSContent";
+        url_ = url_.replace(/[?&]$/, "");
+        const content_ = JSON.stringify(body);
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json-patch+json", 
+                "Accept": "text/plain"
+            })
+        };
+       
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+              
+            return this.processCreate(response_);
+        })).pipe(_observableCatch((response_: any) => {
+           
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreate(<any>response_);
+                } catch (e) {
+                    return <Observable<CmsContentDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CmsContentDto>><any>_observableThrow(response_);
+        }));
+    }
+
+ 
+
+    protected processCreate(response: HttpResponseBase): Observable<CmsContentDto> {
+       
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CmsContentDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CmsContentDto>(<any>null);
+    }
+
+    //service get ALL
+
+    /**
+     * @return Success
+     */
+    getAllCmsContents(): Observable<CmsContentListDto> {
+        let url_ = this.baseUrl + "/api/services/app/CmsContent/GetAll";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAllCmsContents(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetAllCmsContents(<any>response_);
+                } catch (e) {
+                    return <Observable<CmsContentListDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CmsContentListDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGetAllCmsContents(response: HttpResponseBase): Observable<CmsContentListDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CmsContentListDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CmsContentListDto>(<any>null);
+    }
+
+    //
+
+    
+    
+    /**
+     * @param id (optional) 
+     * @return Success
+     */
+    getCmsContent(id: number | undefined): Observable<CmsContentDto> {
+        let url_ = this.baseUrl + "/api/services/app/CmsContent/GetCMSContent?";
+        if (id === null)
+            throw new Error("The parameter 'id' cannot be null.");
+        else if (id !== undefined)
+            url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "text/plain"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGet(<any>response_);
+                } catch (e) {
+                    return <Observable<CmsContentDto>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<CmsContentDto>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGet(response: HttpResponseBase): Observable<CmsContentDto> {
+        const status = response.status;
+        const responseBlob = 
+            response instanceof HttpResponse ? response.body : 
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }};
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = CmsContentDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<CmsContentDto>(<any>null);
+    }
+}

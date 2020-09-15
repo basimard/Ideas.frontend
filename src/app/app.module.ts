@@ -42,7 +42,8 @@ import { CmsContainerComponent } from './cms/cms-container.component';
 import { CmsEditPresentationComponent } from './cms/cms-edit-presentation/cms-edit-presentation.component';
 import { CmsViewPresentationComponent } from './cms/cms-view-presentation/cms-view-presentation.component';
 import { AngularEditorModule } from '@kolkov/angular-editor';
-
+import { UiSwitchModule } from 'ngx-ui-switch';
+import { QuillModule } from 'ngx-quill';
 @NgModule({
   declarations: [
     AppComponent,
@@ -75,6 +76,7 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     CmsContainerComponent,
     CmsEditPresentationComponent,
     CmsViewPresentationComponent
+
   ],
   imports: [
     CommonModule,
@@ -90,7 +92,39 @@ import { AngularEditorModule } from '@kolkov/angular-editor';
     ServiceProxyModule,
     SharedModule,
     NgxPaginationModule,
-    AngularEditorModule 
+    AngularEditorModule,
+    QuillModule.forRoot({modules: {
+      toolbar: [
+        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+        ['blockquote', 'code-block'],
+     
+        [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+        [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+        [{ 'direction': 'rtl' }],                         // text direction
+     
+        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+     
+        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+        [{ 'font': [] }],
+        [{ 'align': [] }],
+     
+        ['clean'],                                         // remove formatting button
+     
+        ['link', 'image', 'video']                         // link and image, video
+      ]
+    }}),
+    UiSwitchModule.forRoot({
+     
+      color: '#c2c7c4',
+      switchColor: '#4b545c',
+      defaultBgColor: '#f2f2f2',
+      defaultBoColor : '#cccccc',
+      checkedLabel: 'View',
+      uncheckedLabel: 'Edit'
+    })
    
     
   ],

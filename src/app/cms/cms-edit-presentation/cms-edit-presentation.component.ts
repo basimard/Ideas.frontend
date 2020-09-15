@@ -1,66 +1,28 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { CmsContentDto } from '@shared/service-proxies/service-proxies';
 @Component({
   selector: 'cms-edit-presentation',
   templateUrl: './cms-edit-presentation.component.html',
   styleUrls: ['./cms-edit-presentation.component.css']
 })
 export class CmsEditPresentationComponent implements OnInit {
-  @Input() pageTitle
-  @Input() pageContent
+  @Input()cmsContent:CmsContentDto 
   @Output() postChange = new EventEmitter();
+  buttonTitle:string
   constructor() { }
 
   ngOnInit(): void {
+  
+    this.cmsContent.id===0?this.buttonTitle="Post":this.buttonTitle="Update"
   }
+   
+ 
 
-  editorConfig: AngularEditorConfig = {
-    editable: true,
-    spellcheck: true,
-    height: 'auto',
-    minHeight: '0',
-    maxHeight: 'auto',
-    width: 'auto',
-    minWidth: '0',
-    translate: 'yes',
-    enableToolbar: true,
-    showToolbar: true,
-    placeholder: 'Enter text here...',
-    defaultParagraphSeparator: '',
-    defaultFontName: '',
-    defaultFontSize: '',
-    fonts: [
-      { class: 'arial', name: 'Arial' },
-      { class: 'times-new-roman', name: 'Times New Roman' },
-      { class: 'calibri', name: 'Calibri' },
-      { class: 'comic-sans-ms', name: 'Comic Sans MS' }
-    ],
-    customClasses: [
-      {
-        name: 'quote',
-        class: 'quote',
-      },
-      {
-        name: 'redText',
-        class: 'redText'
-      },
-      {
-        name: 'titleText',
-        class: 'titleText',
-        tag: 'h1',
-      },
-    ],
-    uploadUrl: 'v1/image',
-    uploadWithCredentials: false,
-    sanitize: true,
-    toolbarPosition: 'top',
-    toolbarHiddenButtons: [
-      ['bold', 'italic'],
-      ['fontSize']
-    ]
-  };
 
-  postChanged() {
-
+  onFormSubmit()
+  {
+    
+    this.postChange.emit(this.cmsContent)
   }
 }

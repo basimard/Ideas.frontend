@@ -6,12 +6,17 @@
         <div class="container-fluid">
           <div class="card">
             <div class="card-body">
-                <form class="form-horizontal">
-              <div *ngIf = "editMode === true || newMode === true">
-                <cms-edit-presentation [pageTitle]="pageTitle" [pageContent]="pageContent"></cms-edit-presentation>
+                 <div >
+                  <ui-switch [(ngModel)]="editMode"></ui-switch>
+                 </div>
+                
+                <form class="form-horizontal mt-2">
+                  
+              <div *ngIf = "editMode === true">
+                <cms-edit-presentation (postChange)="savePost($event)" [cmsContent] = "cmsContentDto"></cms-edit-presentation>
               </div>
-          <div *ngIf = "editMode === false && newMode === false">
-            <cms-view-presentation [pageTitle]="pageTitle" [pageContent]="pageContent"></cms-view-presentation>
+          <div *ngIf = "editMode === false">
+            <cms-view-presentation [cmsContent] = "cmsContentDto"></cms-view-presentation>
           </div>
                 </form>
             </div>

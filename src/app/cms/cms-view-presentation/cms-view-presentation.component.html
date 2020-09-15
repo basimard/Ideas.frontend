@@ -1,10 +1,11 @@
+
 <div class="row">
     <div class="col-12">
-        <div id="htmlTitle" style="display:none;" class="html" [innerHTML]="pageTitle"></div>
+        <h1 #pageTitle  class="html"><b>{{cmsContent.pageTitle}}</b></h1>
     </div>
 </div>
 <div class="row">
     <div class="col-12">
-<div id="htmlDiv" style="display:none;" class="html" [innerHTML]="pageContent"></div>
+<div #pageContent  class="html" [innerHTML]="cmsContent.pageContent | safeHtml"></div>
     </div>
 </div>

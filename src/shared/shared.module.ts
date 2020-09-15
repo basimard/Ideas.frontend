@@ -8,7 +8,7 @@ import { AppUrlService } from './nav/app-url.service';
 import { AppAuthService } from './auth/app-auth.service';
 import { AppRouteGuard } from './auth/auth-route-guard';
 import { LocalizePipe } from '@shared/pipes/localize.pipe';
-
+import { HtmlSanitizerPipe } from '@shared/pipes/htm-sanitizer.pipe';
 import { AbpPaginationControlsComponent } from './components/pagination/abp-pagination-controls.component';
 import { AbpValidationSummaryComponent } from './components/validation/abp-validation.summary.component';
 import { AbpModalHeaderComponent } from './components/modal/abp-modal-header.component';
@@ -30,6 +30,7 @@ import { EqualValidator } from './directives/equal-validator.directive';
         AbpModalHeaderComponent,
         AbpModalFooterComponent,
         LocalizePipe,
+        HtmlSanitizerPipe,
         BusyDirective,
         EqualValidator
     ],
@@ -40,7 +41,8 @@ import { EqualValidator } from './directives/equal-validator.directive';
         AbpModalFooterComponent,
         LocalizePipe,
         BusyDirective,
-        EqualValidator
+        EqualValidator,
+        HtmlSanitizerPipe
     ]
 })
 export class SharedModule {
