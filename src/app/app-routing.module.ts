@@ -21,8 +21,8 @@ import { CmsContainerComponent } from './cms/cms-container.component';
                     { path: 'users', component: UsersComponent, data: { permission: 'Pages.Users' }, canActivate: [AppRouteGuard] },
                     { path: 'roles', component: RolesComponent, data: { permission: 'Pages.Roles' }, canActivate: [AppRouteGuard] },
                     { path: 'tenants', component:TenantsComponent, data: { permission: 'Pages.Tenants' }, canActivate: [AppRouteGuard] },
-                    { path: 'pages', component: CmsContainerComponent},
-                    { path: 'pages/:id', component: CmsContainerComponent},
+                    { path: 'pages', component: CmsContainerComponent,data: { permission: 'Pages.Cms' }, canActivate: [AppRouteGuard]},
+                    { path: 'pages/:id', component: CmsContainerComponent,data: { permission: 'Pages.Cms' }, canActivate: [AppRouteGuard]},
                     { path: 'about', component: AboutComponent },
                     { path: 'update-password', component: ChangePasswordComponent }
                 ]

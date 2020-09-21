@@ -7,22 +7,21 @@ import { CmsContentDto } from '@shared/service-proxies/service-proxies';
   styleUrls: ['./cms-edit-presentation.component.css']
 })
 export class CmsEditPresentationComponent implements OnInit {
-  @Input()cmsContent:CmsContentDto 
+  @Input() cmsContent: CmsContentDto
   @Output() postChange = new EventEmitter();
-  buttonTitle:string
+  buttonTitle: string
   constructor() { }
 
   ngOnInit(): void {
-  
-    this.cmsContent.id===0?this.buttonTitle="Post":this.buttonTitle="Update"
+
+    this.cmsContent.id === 0 ? this.buttonTitle = "Post" : this.buttonTitle = "Update"
   }
-   
- 
 
 
-  onFormSubmit()
-  {
-    
+
+
+  onFormSubmit() {
+
     this.postChange.emit(this.cmsContent)
   }
 }

@@ -7,13 +7,13 @@ import { DomSanitizer } from '@angular/platform-browser'
   styleUrls: ['./cms-view-presentation.component.css'],
 })
 export class CmsViewPresentationComponent implements OnInit {
- 
-  @Input()cmsContent:CmsContentDto 
+
+  @Input() cmsContent: CmsContentDto
 
   constructor() { }
 
   ngOnInit(): void {
-    
+
   }
 
 }

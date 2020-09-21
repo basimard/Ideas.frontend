@@ -1,25 +1,25 @@
 <form #postForm="ngForm" (ngSubmit)="onFormSubmit()">
-<div class="row">
-    <div class="col-12">
-        <input #pageTitle="ngModel" name="pageTitle" type="text" class="form-control" name="keyword" [(ngModel)]="cmsContent.pageTitle" maxlength="100" minlength="10" [placeholder]="'Title' | localize">
-        <span class="hints pl-3" *ngIf="!pageTitle.valid">
-            Min 10 characters and note more than 100.
-        </span>
+    <div class="row">
+        <div class="col-12">
+            <input #pageTitle="ngModel" name="pageTitle" type="text" class="form-control" name="keyword"
+                [(ngModel)]="cmsContent.pageTitle" maxlength="100" minlength="10" [placeholder]="'Title' | localize">
+            <span class="hints pl-3" *ngIf="!pageTitle.valid">
+                Min 2 characters and note more than 100.
+            </span>
+        </div>
     </div>
-</div>
-<div class="row mt-4">
-    <div class="col-12">
-        <quill-editor [minLength]="10"[maxLength]="2000"  [(ngModel)]="cmsContent.pageContent"
-        [styles]="{height: '200px'}" 
-    #pageContent="ngModel"  name="pageContent"></quill-editor>
+    <div class="row mt-4">
+        <div class="col-12">
+            <quill-editor [minLength]="10" [maxLength]="2000" [(ngModel)]="cmsContent.pageContent"
+                [styles]="{height: '200px'}" #pageContent="ngModel" name="pageContent"></quill-editor>
+        </div>
+        <span class="hints pl-3" *ngIf="!pageContent.valid">
+            Min 10 characters and note more than 2000</span>
     </div>
-    <span class="hints pl-3" *ngIf="!pageContent.valid">
-        Min 10 characters and note more than 2000</span>
-</div>
-<div class="row mt-2">
-    <div class="col-11"></div>
-    <div class="col-1 float-left">
-        <button [disabled]="!postForm.valid" type ="submit"class="btn btn-success">{{buttonTitle}}</button>
+    <div class="row mt-2">
+        <div class="col-11"></div>
+        <div class="col-1 float-left">
+            <button [disabled]="!postForm.valid" type="submit" class="btn btn-success">{{buttonTitle}}</button>
+        </div>
     </div>
-</div>
 </form>

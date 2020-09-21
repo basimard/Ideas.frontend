@@ -13,45 +13,46 @@ import { switchMap } from 'rxjs/operators';
 
 export class CmsContainerComponent implements OnInit {
 
-  id: number
+  id: any
   editMode = false
-  cmsContentDto = new CmsContentDto({id:0,pageTitle:null, pageContent:null})
-  constructor(public _cmsService: CmsServiceProxy, private route: ActivatedRoute,private router:Router) {
-    this.cmsContentDto.init({id:0,pageTitle:null, pageContent:null})
+  cmsContentDto = new CmsContentDto({ id: 0, pageTitle: null, pageContent: null })
+  constructor(public _cmsService: CmsServiceProxy, private route: ActivatedRoute, private router: Router) {
+    this.cmsContentDto.init({ id: 0, pageTitle: null, pageContent: null })
   }
   ngOnInit(): void {
-  
-    
-    this.route.paramMap.pipe(switchMap((params)=>{
-        return iif(() => params.get('id')!=undefined,
-       this._cmsService.getCmsContent(parseInt(params.get('id')))
-       ,of(this.cmsContentDto));
-      })).subscribe((params)=>{
-          this.cmsContentDto.init(params)
-          if(this.cmsContentDto.id === 0)
-          { 
-             this.editMode = true
-          }
-          else{
-             this.editMode = false
-          }
-      })
-     
- 
-   
+
+
+    this.route.paramMap.pipe(switchMap((params) => {
+      this.id = params.get('id')
+      return iif(() => params.get('id') != undefined,
+        this._cmsService.getCmsContent(parseInt(params.get('id')))
+        , of(this.cmsContentDto));
+    })).subscribe((params) => {
+      this.cmsContentDto.init(params)
+      if (this.cmsContentDto.id === 0) {
+        this.editMode = true
+      }
+      else {
+        this.editMode = false
+      }
+    })
+
+
+
   }
-  savePost(postData){
-    
-   this._cmsService.insertOrUpdate(postData).subscribe((data)=>{
-    if(this.id==0)
-    {
-      this.router.navigate(['/app/pages', data.id])
-    }
-    else{
-      this.editMode = false;
-    }
-    
-   })
+  savePost(postData) {
+
+    this._cmsService.insertOrUpdate(postData).subscribe((data) => {
+
+      if (this.id === null) {
+        this.router.navigate(['/app/pages', data.id])
+      }
+      else {
+
+        this.editMode = false;
+      }
+
+    })
   }
 
 }
