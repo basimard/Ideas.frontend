@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
+import {IEventModel} from '@shared/event-model'
 import { CmsContentDto } from '@shared/service-proxies/service-proxies';
+
 @Component({
   selector: 'cms-edit-presentation',
   templateUrl: './cms-edit-presentation.component.html',
@@ -10,6 +11,7 @@ export class CmsEditPresentationComponent implements OnInit {
   @Input() cmsContent: CmsContentDto
   @Output() postChange = new EventEmitter();
   buttonTitle: string
+  eventModel:IEventModel = { eventBody:null, eventType:null};
   constructor() { }
 
   ngOnInit(): void {
@@ -18,10 +20,9 @@ export class CmsEditPresentationComponent implements OnInit {
   }
 
 
-
-
   onFormSubmit() {
-
-    this.postChange.emit(this.cmsContent)
+    this.eventModel.eventBody = this.cmsContent;
+    this.eventModel.eventType = 'SUBMIT'
+    this.postChange.emit(this.eventModel)
   }
 }

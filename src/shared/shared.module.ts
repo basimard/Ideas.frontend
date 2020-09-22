@@ -6,6 +6,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { AppSessionService } from './session/app-session.service';
 import { AppUrlService } from './nav/app-url.service';
 import { AppAuthService } from './auth/app-auth.service';
+import {DataShareService} from './data-service/data-share-service'
 import { AppRouteGuard } from './auth/auth-route-guard';
 import { LocalizePipe } from '@shared/pipes/localize.pipe';
 import { HtmlSanitizerPipe } from '@shared/pipes/htm-sanitizer.pipe';
@@ -55,6 +56,8 @@ export class SharedModule {
                 AppAuthService,
                 AppRouteGuard,
                 LayoutStoreService
+               
+
             ]
         };
     }

@@ -44,6 +44,7 @@ import { CmsViewPresentationComponent } from './cms/cms-view-presentation/cms-vi
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { UiSwitchModule } from 'ngx-ui-switch';
 import { QuillModule } from 'ngx-quill';
+import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [
     AppComponent,
@@ -75,12 +76,14 @@ import { QuillModule } from 'ngx-quill';
     SidebarMenuComponent,
     CmsContainerComponent,
     CmsEditPresentationComponent,
-    CmsViewPresentationComponent
+    CmsViewPresentationComponent,
+    
 
   ],
   imports: [
     CommonModule,
     FormsModule,
+    RouterModule,
     ReactiveFormsModule,
     HttpClientModule,
     HttpClientJsonpModule,
@@ -113,7 +116,7 @@ import { QuillModule } from 'ngx-quill';
      
         ['clean'],                                         // remove formatting button
      
-        ['link', 'image', 'video']                         // link and image, video
+        ['link']                         // link and image, video
       ]
     }}),
     UiSwitchModule.forRoot({

@@ -19,7 +19,9 @@
     <div class="row mt-2">
         <div class="col-11"></div>
         <div class="col-1 float-left">
-            <button [disabled]="!postForm.valid" type="submit" class="btn btn-success">{{buttonTitle}}</button>
+            <button
+                [disabled]="!postForm.valid || cmsContent.pageContent=== null ||cmsContent.pageTitle === null || cmsContent.pageTitle ===''"
+                type="submit" class="btn btn-success">{{buttonTitle}}</button>
         </div>
     </div>
 </form>
